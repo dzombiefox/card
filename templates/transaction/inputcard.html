@@ -1,0 +1,184 @@
+{% extends 'layout.html' %}
+{% block title %} Add Transaction {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+
+{% block content %}
+ <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-body">
+                            <div class="box-header with-border">
+              <h3 class="box-title">Transactions Form</h3>
+            </div>
+
+    {% for message in messages %}
+       <div class="alert alert-danger">
+		                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		                                <strong>Error!</strong> There no match identity or credit card number !!
+		                            </div>
+    {% endfor %}
+            <ul class="timeline">
+    <li>
+        <!-- timeline icon -->
+        <i class="fa fa-calculator bg-blue"></i>
+        <div class="timeline-item">
+            <span class="time"><i class="fa fa-clock-o"></i> {% now "jS F Y " %}</span>
+
+            <h3 class="timeline-header"><a href="#">{{ data.customer.customerName }}</a> </h3>
+
+            <div class="timeline-body">
+
+             <table class="table no-border" style="width:100%"   >
+                 <tr>
+                        <td>No Identity</td>
+                        <td>:</td>
+                        <td>{{ data.customer.identityNumber }}</td>
+                        <td rowspan="4" align="right"><img src='/media/{{ data.customer.imagescan }}'  height="135px" /> </td>
+                 </tr>
+                 <tr>
+                        <td> 	Contact Number</td>
+                        <td>:</td>
+                        <td>{{ data.customer.contactNumber }}</td>
+
+                 </tr>
+                  <tr>
+                        <td>No Handphone</td>
+                        <td>:</td>
+                        <td>{{ data.customer.handphone }}</td>
+
+                 </tr>
+                  <tr>
+                        <td>Email</td>
+                        <td>:</td>
+                        <td>{{ data.customer.email }}</td>
+
+                 </tr>
+             </table>
+
+<HR>
+
+            <form class="form-horizontal" method="post"  action="savecard">
+                  {% csrf_token %}
+            <input type="hidden" name="user" value="{{ user.id }}">
+            <input type="hidden" name="identitynumber" value="{{ data.customer_id }}">
+              <div class="box-body">
+
+                <div class="form-group">
+                  <div class="col-sm-4">
+                   {{ form.date | add_class:'form-control  tanggal' |attr:"required" |attr:"readonly" }}
+                  </div>
+                 <div class="col-sm-2">
+                         <div class="checkbox">
+                      <label>
+                        <input type="checkbox" class="manual" >&nbsp;Manual Date
+                      </label>
+                    </div>
+                    </div>
+                           <div class="col-sm-6">
+                   <input type="text" name="credit" value="{{ data.cardNumber }}" class="form-control" readonly>
+                  </div>
+                </div>
+
+              <div class="form-group">
+
+                  <div class="col-sm-4">
+                   {{ form.amount | add_class:'form-control numbers' |attr:"required" |attr:"placeholder:Amount" }}
+                  </div>
+                   <div class="col-sm-4">
+                 <select name="account" class="form-control" required>
+                 <option value="">.:Destination account:.</option>
+                     {% for data in account %}
+                     <option value="{{ data.id }}">{{ data.accountNumber }} ({{ data.bank }}- {{ data.accountOwner }})</option>
+                     {% endfor %}
+                 </select>
+                  </div>
+                   <div class="col-sm-4">
+                   {{ form.machine | add_class:'form-control' |attr:"required"|attr:"placeholder:Machine" }}
+                  </div>
+
+                </div>
+
+                  <div class="form-group">
+                  <div class="col-sm-6">
+                   <select class="form-control" name="type">
+                       <option value="0">SWIPE BRUTTO</option>
+                       <option value="1">SWIPE NETTO</option>
+                   </select>
+                  </div>
+                   <div class="col-sm-6">
+                   {{ form.percentage | add_class:'form-control' |attr:"placeholder:%" |attr:"required"}}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-sm-6">
+                      {{ form.note | add_class:'form-control' |attr:"placeholder:NOTE" |attr:"rows:2"  }}
+
+                  </div>
+                 <div class="col-sm-6">
+                   <button type="submit" class="btn btn-info pull-right bg-purple">Process</button>
+                  </div>
+
+                </div>
+              <!-- /.box-footer -->
+            </form>
+                            </div>
+        </div>
+    </li>
+            </ul>
+          </div>
+</div>
+        </div>
+      </div>
+ <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">History Transactions</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+               <table  class="table table-bordered table-responsive  " >
+                <thead>
+                <tr>
+                  <th>NO</th>
+                  <th>Date</th>
+                  <th>Card</th>
+                  <th>Amount</th>
+                  <th>Percentage</th>
+                  <th>Accepted</th>
+                  <th>Settle</th>
+                  <th>Machine</th>
+                  <th>Note</th>
+                </tr>
+                </thead>
+                <tbody>
+                 {% for data in trans %}
+                     <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ data.date }}</td>
+                        <td>{{ data.credit}}</td>
+                        <td>{{ data.amount |intcomma}}</td>
+                        <td>
+                           {% if data.type == "0" %}
+                           SWIPE BRUTTO - ({{ data.percentage }}%)
+                           {% else %}
+                            SWIPE NETTO - ({{ data.percentage }}%)
+                            {% endif %}
+                           </td>
+                        <td >{{ data.amountAccept |intcomma}}</td>
+                        <td>{{ data.totalSettle | intcomma}}</td>
+                        <td>{{ data.machine }}</td>
+                        <td>{{ data.note }}</td>
+                     </tr>
+                {% endfor %}
+                </tbody>
+           </table>
+<br>
+            </div>
+            <!-- /.box-body -->
+          </div>
+ </section>
+
+{% endblock %}

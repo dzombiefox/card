@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+{% block title %} Data Stok {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+{% load templatetags %}
+{% block content %}
+ <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+{#            <div class="box-header">#}
+{#              <h3 class="box-title">Data Machine</h3>#}
+{##}
+{#            </div>#}
+            <!-- /.box-header -->
+            <div class="box-body">
+
+ <a href="{% url "addmachine" %}"class="btn pull-right btn-success btn-flat bg-aqua">Add Machine</a>
+            <br>
+                <br>
+                <br>
+                <br>
+               <table id="example" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>NO</th>
+                  <th>MACHINE NAME</th>
+                  <th>BANK RATE</th>
+                  <th>Maximum Usage</th>
+                  <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for data in data %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ data.machineName }}
+                  </td>
+                  <td>{{ data.bankRate }}</td>
+                  <td> {{ data.maxUsage |intcomma}}</td>
+                  <td><a class="fa fa-edit btn-flat btn-sm" href="{% url "editmachine" data.id|encode_id %}"></a> </td>
+                </tr>
+                {% endfor %}
+
+
+                </tbody>
+
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+
+        </div>
+      </div>
+ </section>
+
+{% endblock %}

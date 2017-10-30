@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+{% block title %} Add Transaction {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+
+{% block content %}
+ <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-body">
+                            <div class="box-header with-border">
+              <h3 class="box-title">Transactions Form</h3>
+            </div>
+
+    {% for message in messages %}
+       <div class="alert alert-danger">
+		                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		                                <strong>Error!</strong> There no match identity or credit card number !!
+		                            </div>
+    {% endfor %}
+
+            <form class="form-horizontal" method="post" >
+                  {% csrf_token %}
+              <div class="box-body">
+                <div class="form-group">
+{#                  <label for="inputEmail3" class="col-sm-2 control-label">Date</label>#}
+                  <div class="col-sm-12">
+                      <input type="text" class="form-control" placeholder="IdentityNumber / Credit Card" name="input">
+{#                   {{ form.date | add_class:'form-control' |attr:"placeholder:" }}#}
+                  </div>
+                </div>
+
+
+
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+{#                <button type="submit" class="btn btn-default">Cancel</button>#}
+                <button type="submit" class="btn btn-info pull-right">Process</button>
+              </div>
+              <!-- /.box-footer -->
+            </form>
+          </div>
+</div>
+        </div>
+      </div>
+ </section>
+
+{% endblock %}

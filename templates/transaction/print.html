@@ -1,0 +1,141 @@
+{% extends 'layout.html' %}
+{% block title %} Add Transaction {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+
+{% block content %}
+
+<section class="invoice">
+      <!-- title row -->
+      <div class="row">
+        <div class="col-xs-12">
+          <h2 class="page-header">
+            <i class="fa fa-credit-card"></i> STRUCK INVOICE
+            <small class="pull-right">Date: {% now "j F Y " %}</small>
+          </h2>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- info row -->
+      <div class="row invoice-info">
+
+        <!-- /.col -->
+        <div class="col-sm-6 invoice-col">
+
+          <address>
+         <table style="width: 50%" class="table no-border">
+             <tr>
+                 <td><strong>Date Transaction</strong></td>
+                 <td>:</td>
+                 <td>{{ data.date }}</td>
+             </tr>
+              <tr>
+                 <td><strong>Customer Name</strong></td>
+                 <td>:</td>
+                 <td>{{ data.customer.customerName }}</td>
+             </tr>
+              <tr>
+                 <td><strong>Identity Number</strong></td>
+                 <td>:</td>
+                 <td>{{ data.customer.identityNumber }}</td>
+             </tr>
+         </table>
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-6 invoice-col">
+          <table style="width: 40%" class="table no-border">
+
+              <tr>
+                 <td><strong>Contact Number</strong></td>
+                 <td>:</td>
+                 <td>{{ data.customer.contactNumber }}</td>
+             </tr>
+              <tr>
+                 <td><strong>Phone Number</strong></td>
+                 <td>:</td>
+                 <td>{{ data.customer.handphone }}</td>
+             </tr>
+         </table>
+        </div>
+        <!-- /.col -->
+      </div>
+    <hr>
+      <!-- /.row -->
+
+      <!-- Table row -->
+      <div class="row">
+        <div class="col-xs-12 table-responsive">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>Credit Card</th>
+              <th>Amount</th>
+              <th>Destination Account</th>
+              <th>Percentage</th>
+              <th>Machine</th>
+              <th>Note</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>{{ data.credit.cardNumber }}-({{ data.credit.bank }})</td>
+              <td>{{ data.amount | intcomma }}</td>
+              <td>{{ data.account }}</td>
+              <td>{{ data.percentage }}%</td>
+              <td>{{ data.machine }}</td>
+              <td>{{ data.note }}</td>
+            </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+      <div class="row">
+        <!-- accepted payments column -->
+        <div class="col-xs-6">
+          <p class="lead">Payment Methods:  {% if data.type == 1 %}
+                <strong> <u>SWIPE NETTO</u></strong>
+                {% else %}
+                <strong> <u>SWIPE BRUTO</u></strong>
+            {% endif %}</p>
+
+        </div>
+        <!-- /.col -->
+        <div class="col-xs-6">
+
+
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <th style="width:50%">Amount Accept</th>
+                <td>{{ data.amountAccept |intcomma }}</td>
+              </tr>
+              <tr>
+                <th>Total Settle</th>
+                <td>{{ data.totalSettle |intcomma }}</td>
+              </tr>
+
+            </table>
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+      <!-- this row will not appear when printing -->
+      <div class="row no-print">
+        <div class="col-xs-12">
+
+          <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;"  onclick="jQuery('.invoice').print()">
+            <i class="fa fa-print"></i> Print Invoice
+          </button>
+        </div>
+      </div>
+    </section>
+
+{% endblock %}

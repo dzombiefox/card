@@ -1,0 +1,98 @@
+{% extends 'layout.html' %}
+{% block title %} Add Customer {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+{% block content %}
+ <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+{#            <div class="box-header">#}
+{#              <h3 class="box-title">Data Machine</h3>#}
+{##}
+{#            </div>#}
+            <!-- /.box-header -->
+            <div class="box-body">
+                            <div class="box-header with-border">
+              <h3 class="box-title">Customer Form</h3>
+            </div>{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+       <div class="alert alert-danger">
+		                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		                                <strong>Error!</strong> There some error occured !!
+		                            </div>
+    {% endfor %}
+</ul>
+{% endif %}
+           <form class="form-horizontal" method="post"  enctype="multipart/form-data">
+                  {% csrf_token %}
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Date</label>
+                  <div class="col-sm-10">
+{#                     <input type="text" class="form-control" data-inputmask="'alias': 'yyyy/mm/yyyy'" data-mask id="datemask">#}
+                   {{ form.date | add_class:'form-control tgl' |attr:"required"|attr:"readonly" }}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label">Identity Number</label>
+                  <div class="col-sm-10">
+                    {{ form.identityNumber | add_class:'form-control ' |attr:"required" }}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label">Custommer Name</label>
+                  <div class="col-sm-10">
+                    {{ form.customerName | add_class:'form-control ' |attr:"required"}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label">Date Birth</label>
+                  <div class="col-sm-10">
+                    {{ form.dateBirth | add_class:'form-control datemask' |attr:"required"}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label">Contact Number</label>
+                  <div class="col-sm-10">
+                    {{ form.contactNumber | add_class:'form-control  numbers' |attr:"required"}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label">Handphone</label>
+                  <div class="col-sm-10">
+                    {{ form.handphone | add_class:'form-control ' |attr:"required"}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label">Email</label>
+                  <div class="col-sm-10">
+                    {{ form.email | add_class:'form-control ' |attr:"required"}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label">Image Scan</label>
+                  <div class="col-sm-10">
+                        <input type="text" readonly="" class="form-control" placeholder="Browse..." name="imagescan">
+                    {{ form.imagescan | add_class:'form-control ' |attr:"required" }}
+                  </div>
+                </div>
+
+
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="submit" class="btn btn-default">Cancel</button>
+                <button type="submit" class="btn btn-info pull-right">Process</button>
+              </div>
+              <!-- /.box-footer -->
+            </form>
+          </div>
+</div>
+        </div>
+      </div>
+ </section>
+
+{% endblock %}
